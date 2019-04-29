@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   ReactiveBase,
   DataSearch,
-  SingleList,
+  MultiList,
+  DateRange,
   SelectedFilters
 } from "@appbaseio/reactivesearch";
 import { ReactiveMap } from "@appbaseio/reactivemaps";
@@ -10,6 +11,8 @@ import { ReactiveMap } from "@appbaseio/reactivemaps";
 import "./App.css";
 
 class App extends Component {
+
+  // For list filters
   renderListItem = (label, count) => {
     return (
       <div>
@@ -44,17 +47,31 @@ class App extends Component {
               iconPosition="left"
               filterLabel="search"
             />
+
+            <DateRange
+              componentId="DatePicker"
+              dataField="timestamp"
+            />
+
           </div>
 
           <div className={"display"}>
             <div className={"leftSidebar"}>
-              <SingleList
-                title="Places"
-                componentId="places"
-                dataField="place.raw"
-                size={50}
-                showSearch={true}
+
+            <MultiList
+                componentId="LabelFilter"
+                dataField="text.keyword"
+                title="Labels"
+                react={{
+                  and: [
+                    "NavBarSearch", "DatePicker"
+                  ]
+                }}
+                renderListItem={(label, count) =>
+                  this.renderListItem(label, count)
+                }
               />
+
             </div>
 
             <div className={"mainBar"}>
@@ -66,12 +83,13 @@ class App extends Component {
                 componentId="map"
                 dataField="location"
                 react={{
-                  and: ["NavBarSearch"]
+                  and: ["NavBarSearch", "LabelFilter", "DatePicker"]
                 }}
                 onData={result => ({
                   custom: (
                     <div>
-                      <b>{result.first_name}</b> <b>{result.last_name}</b>
+                      <b>{result.text}</b>
+                      <img src={result.url} ></img>
                     </div>
                   )
                 })}
