@@ -14,6 +14,11 @@
   letter-spacing: 0.05rem;
 }
 
+.gm-style img {
+  max-width: 300px !important;
+  max-height: 300px !important;
+}
+
 .logo {
   margin-left: 16px;
   float: left;
@@ -60,7 +65,7 @@
 @media all and (max-width: 768px) {
   .leftSidebar {
     position: static;
-    width: 100%;
+    width: 90%;
     height: auto;
     border-right: 0;
     border-bottom: 1px solid #f0f0f0;

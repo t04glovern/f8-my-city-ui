@@ -4,6 +4,7 @@ import {
   DataSearch,
   MultiList,
   DateRange,
+  TagCloud,
   SelectedFilters
 } from "@appbaseio/reactivesearch";
 import { ReactiveMap } from "@appbaseio/reactivemaps";
@@ -23,6 +24,29 @@ class App extends Component {
   };
 
   render() {
+    const mapProps = {
+      dataField: "location",
+      autoCenter: true,
+      defaultMapStyle: "Standard",
+      title: "Reactive Maps",
+      defaultZoom: 14,
+      react: {
+        and: ["NavBarSearch", "LabelFilter", "DatePicker", "TagCloud"]
+      },
+      searchAsMove: true,
+      onPopoverClick: result => (
+        <div>
+          <b>{result.category}</b>
+          <hr></hr>
+          <p>{result.status_notes}</p>
+          <img src={result.url ? result.url : 'blank.png'} alt='Image'></img>
+        </div>
+      ),
+      onData: result => ({
+        icon: result.status === "Closed" ? 'success.png' : 'progress.png'
+      }),
+      showMapStyles: true
+    };
     return (
       <div className="main-container">
         <ReactiveBase
@@ -36,7 +60,7 @@ class App extends Component {
             <DataSearch
               className="datasearch"
               componentId="NavBarSearch"
-              dataField={["text", "text.synonym"]}
+              dataField={["status_notes", "status_notes.synonym", "category"]}
               queryFormat="and"
               placeholder="Search for keywords"
               innerClass={{
@@ -60,7 +84,7 @@ class App extends Component {
 
             <MultiList
                 componentId="LabelFilter"
-                dataField="text.keyword"
+                dataField="category"
                 title="Labels"
                 react={{
                   and: [
@@ -72,30 +96,23 @@ class App extends Component {
                 }
               />
 
+              <hr></hr>
+
+              <TagCloud
+                componentId="TagCloud"
+                dataField="request_type"
+                multiSelect
+                size={50}
+              />
+
             </div>
 
             <div className={"mainBar"}>
               <SelectedFilters />
 
               <ReactiveMap
-                showSearchAsMove={false}
-                defaultMapStyle="Standard"
                 componentId="map"
-                dataField="location"
-                react={{
-                  and: ["NavBarSearch", "LabelFilter", "DatePicker"]
-                }}
-                onData={result => ({
-                  custom: (
-                    <div>
-                      <b>{result.text}</b>
-                      <img src={result.url} ></img>
-                    </div>
-                  )
-                })}
-                defaultZoom={15}
-                autoCenter={true}
-                showMarkerClusters={true}
+                {...mapProps}
               />
             </div>
           </div>
