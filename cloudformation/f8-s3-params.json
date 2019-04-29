@@ -1,0 +1,14 @@
+[
+    {
+        "ParameterKey": "BucketName",
+        "ParameterValue": "f8-mycity"
+    },
+    {
+        "ParameterKey": "IndexDocument",
+        "ParameterValue": "index.html"
+    },
+    {
+        "ParameterKey": "ErrorDocument",
+        "ParameterValue": "index.html"
+    }
+  ]

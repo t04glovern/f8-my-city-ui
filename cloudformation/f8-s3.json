@@ -1,0 +1,84 @@
+{
+  "Description": "S3 Bucket deployment for Static sites",
+  "Parameters": {
+    "BucketName": {
+      "Description": "Bucket name used for resource naming (Lowercase and '-' characters only)",
+      "Type": "String",
+      "AllowedPattern": "^[-a-z0-9]*$"
+    },
+    "IndexDocument": {
+      "Description": "Root document to expose over the static sites endpoint",
+      "Type": "String",
+      "Default": "index.html"
+    },
+    "ErrorDocument": {
+      "Description": "Root document to expose over the static sites endpoint for Errors/404's",
+      "Type": "String",
+      "Default": "index.html"
+    }
+  },
+  "Resources": {
+    "S3StaticSiteBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Ref": "BucketName"
+        },
+        "WebsiteConfiguration": {
+          "IndexDocument": {
+            "Ref": "IndexDocument"
+          },
+          "ErrorDocument": {
+            "Ref": "ErrorDocument"
+          }
+        },
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "S3StaticSitePolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3StaticSiteBucket"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Id": "S3PolicyId1",
+          "Statement": [
+            {
+              "Sid": "IPAllow",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "S3StaticSiteBucket"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "S3StaticSiteBucketEndpoint": {
+      "Description": "S3 Static Site Bucket URL endpoint",
+      "Value": {
+        "Fn::GetAtt": ["S3StaticSiteBucket", "WebsiteURL"]
+      }
+    }
+  }
+}
