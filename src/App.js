@@ -7,12 +7,11 @@ import {
   SelectedFilters
 } from "@appbaseio/reactivesearch";
 import { ReactiveMap } from "@appbaseio/reactivemaps";
-import { Button, Media } from 'react-bootstrap';
+import { Button, Media } from "react-bootstrap";
 
 import "./App.css";
 
 class App extends Component {
-
   // For list filters
   renderListItem = (label, count) => {
     return (
@@ -24,17 +23,17 @@ class App extends Component {
   };
 
   handleClick(category, caseID) {
-    fetch('https://mycity-f8.herokuapp.com/notification', {
-      method: 'POST',
+    fetch("https://mycity-f8.herokuapp.com/notification", {
+      method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         category: category,
-        sender_psid: caseID,
+        sender_psid: caseID
       })
-    })
+    });
   }
 
   render() {
@@ -53,23 +52,38 @@ class App extends Component {
           <img
             width={200}
             className="mr-3"
-            src={result.url ? result.url : 'blank.png'}
-            alt="Image"
+            src={result.url ? result.url : "blank.png"}
+            alt="Report"
           />
           <Media.Body>
             <h5>{result.category}</h5>
             <p>Case id: {result.caseID}</p>
-            <p>
-              {result.status_notes}
-            </p>
-            <Button variant="success" onClick={() => {
-              this.handleClick(result.category, result.caseID)
-            }}>Mark as Done</Button>
+            <p>{result.status_notes}</p>
+            {result.status === "Closed" ? (
+              <Button
+                variant="success"
+                disabled
+                onClick={() => {
+                  this.handleClick(result.category, result.caseID);
+                }}
+              >
+                Complete
+              </Button>
+            ) : (
+              <Button
+                variant="warning"
+                onClick={() => {
+                  this.handleClick(result.category, result.caseID);
+                }}
+              >
+                Mark as Done
+              </Button>
+            )}
           </Media.Body>
         </Media>
       ),
       onData: result => ({
-        icon: result.status === "Closed" ? 'success.png' : 'progress.png'
+        icon: result.status === "Closed" ? "success.png" : "progress.png"
       }),
       showMapStyles: true
     };
@@ -82,10 +96,10 @@ class App extends Component {
         >
           <div className="navbar">
             <div className="logo">
-            <a href="#">
-              <img src="logo.png" alt="Logo"></img>
-            </a>
-            <span style={{ paddingLeft: 10 }}>MyCity</span>
+              <a href=".">
+                <img src="logo.png" alt="Logo" />
+              </a>
+              <span style={{ paddingLeft: 10 }}>MyCity</span>
             </div>
 
             {/* <DataSearch
@@ -103,41 +117,30 @@ class App extends Component {
               filterLabel="search"
             /> */}
 
-            <DateRange
-              componentId="DatePicker"
-              dataField="timestamp"
-            />
-
+            <DateRange componentId="DatePicker" dataField="timestamp" />
           </div>
 
           <div className={"display"}>
             <div className={"leftSidebar"}>
-
-            <MultiList
+              <MultiList
                 componentId="LabelFilter"
                 dataField="category"
                 title="Labels"
                 react={{
-                  and: [
-                    "DatePicker"
-                  ]
+                  and: ["DatePicker"]
                 }}
                 renderListItem={(label, count) =>
                   this.renderListItem(label, count)
                 }
               />
 
-              <hr></hr>
-
+              <hr />
             </div>
 
             <div className={"mainBar"}>
               <SelectedFilters />
 
-              <ReactiveMap
-                componentId="map"
-                {...mapProps}
-              />
+              <ReactiveMap componentId="map" {...mapProps} />
             </div>
           </div>
         </ReactiveBase>
