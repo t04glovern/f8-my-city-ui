@@ -1,5 +1,7 @@
 # F8 MyCity - UI
 
+![Banner](img/mycity-banner.png)
+
 [http://f8-mycity.s3-website-us-east-1.amazonaws.com/](http://f8-mycity.s3-website-us-east-1.amazonaws.com/)
 
 ## Screenshots

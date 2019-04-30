@@ -7,7 +7,7 @@ import {
   SelectedFilters
 } from "@appbaseio/reactivesearch";
 import { ReactiveMap } from "@appbaseio/reactivemaps";
-import { Button, Media } from "react-bootstrap";
+import { Button, Media, Image } from "react-bootstrap";
 
 import "./App.css";
 
@@ -117,17 +117,18 @@ class App extends Component {
               filterLabel="search"
             /> */}
 
-            <DateRange componentId="DatePicker" dataField="timestamp" />
+            <DateRange componentId="DatePicker" style={{ color: "black" }} dataField="timestamp" />
           </div>
 
           <div className={"display"}>
             <div className={"leftSidebar"}>
+
               <MultiList
                 componentId="LabelFilter"
                 dataField="category"
-                title="Labels"
+                title="All Issues"
                 react={{
-                  and: ["DatePicker"]
+
                 }}
                 renderListItem={(label, count) =>
                   this.renderListItem(label, count)
@@ -135,6 +136,13 @@ class App extends Component {
               />
 
               <hr />
+
+              <div style={{ position: "absolute", bottom: 15 }}>
+              <a href="https://www.facebook.com/MyCity.open/" target="_blank">
+                <Image src="facebook-send.png" style={{ width: '50%' }} alt="Logo" />
+              </a>
+            </div>
+
             </div>
 
             <div className={"mainBar"}>
