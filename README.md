@@ -6,6 +6,8 @@
 
 ![Screenshot 01](img/react-01.png)
 
+![Screenshot 02](img/phone-mycity-example-overview.png)
+
 ## Screenshots (Future State)
 
 ![Screenshot 01](img/react-future-state-01.png)
