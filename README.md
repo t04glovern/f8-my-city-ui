@@ -2,6 +2,16 @@
 
 [http://f8-mycity.s3-website-us-east-1.amazonaws.com/](http://f8-mycity.s3-website-us-east-1.amazonaws.com/)
 
+## Screenshots
+
+![Screenshot 01](img/react-01.png)
+
+## Screenshots (Future State)
+
+![Screenshot 01](img/react-future-state-01.png)
+
+![Screenshot 02](img/react-future-state-02.png)
+
 ## Setup
 
 ```bash
