@@ -1,5 +1,7 @@
 # F8 MyCity - UI
 
+[http://f8-mycity.s3-website-us-east-1.amazonaws.com/](http://f8-mycity.s3-website-us-east-1.amazonaws.com/)
+
 ## Setup
 
 ```bash

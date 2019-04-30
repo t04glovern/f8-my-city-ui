@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import {
   ReactiveBase,
-  DataSearch,
+  // DataSearch,
   MultiList,
   DateRange,
-  TagCloud,
   SelectedFilters
 } from "@appbaseio/reactivesearch";
 import { ReactiveMap } from "@appbaseio/reactivemaps";
+import { Button, Media } from 'react-bootstrap';
 
 import "./App.css";
 
@@ -17,11 +17,25 @@ class App extends Component {
   renderListItem = (label, count) => {
     return (
       <div>
-        {label}
-        <span style={{ marginLeft: 5, color: "#3b5998" }}>{count}</span>
+        <b>{label}</b>
+        <span style={{ marginLeft: 5, color: "#FFC440" }}>{count}</span>
       </div>
     );
   };
+
+  handleClick(category, caseID) {
+    fetch('https://mycity-f8.herokuapp.com/notification', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        category: category,
+        sender_psid: caseID,
+      })
+    })
+  }
 
   render() {
     const mapProps = {
@@ -31,16 +45,28 @@ class App extends Component {
       title: "Reactive Maps",
       defaultZoom: 14,
       react: {
-        and: ["NavBarSearch", "LabelFilter", "DatePicker", "TagCloud"]
+        and: ["LabelFilter", "DatePicker"]
       },
       searchAsMove: true,
       onPopoverClick: result => (
-        <div>
-          <b>{result.category}</b>
-          <hr></hr>
-          <p>{result.status_notes}</p>
-          <img src={result.url ? result.url : 'blank.png'} alt='Image'></img>
-        </div>
+        <Media as="li">
+          <img
+            width={200}
+            className="mr-3"
+            src={result.url ? result.url : 'blank.png'}
+            alt="Image"
+          />
+          <Media.Body>
+            <h5>{result.category}</h5>
+            <p>Case id: {result.caseID}</p>
+            <p>
+              {result.status_notes}
+            </p>
+            <Button variant="success" onClick={() => {
+              this.handleClick(result.category, result.caseID)
+            }}>Mark as Done</Button>
+          </Media.Body>
+        </Media>
       ),
       onData: result => ({
         icon: result.status === "Closed" ? 'success.png' : 'progress.png'
@@ -55,9 +81,14 @@ class App extends Component {
           mapKey="AIzaSyCkEYsc4_-4mqhNSA6KR-7_PDXsu5p_qwo"
         >
           <div className="navbar">
-            <div className="logo">MyCity Search App</div>
+            <div className="logo">
+            <a href="#">
+              <img src="logo.png" alt="Logo"></img>
+            </a>
+            <span style={{ paddingLeft: 10 }}>MyCity</span>
+            </div>
 
-            <DataSearch
+            {/* <DataSearch
               className="datasearch"
               componentId="NavBarSearch"
               dataField={["status_notes", "status_notes.synonym", "category"]}
@@ -70,7 +101,7 @@ class App extends Component {
               autosuggest={true}
               iconPosition="left"
               filterLabel="search"
-            />
+            /> */}
 
             <DateRange
               componentId="DatePicker"
@@ -88,7 +119,7 @@ class App extends Component {
                 title="Labels"
                 react={{
                   and: [
-                    "NavBarSearch", "DatePicker"
+                    "DatePicker"
                   ]
                 }}
                 renderListItem={(label, count) =>
@@ -97,13 +128,6 @@ class App extends Component {
               />
 
               <hr></hr>
-
-              <TagCloud
-                componentId="TagCloud"
-                dataField="request_type"
-                multiSelect
-                size={50}
-              />
 
             </div>
 

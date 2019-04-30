@@ -7,9 +7,8 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  background-color: #3b5998	;
+  background-color: #211E1E;
   color: #fff;
-  height: 52px;
   font-size: 15px;
   letter-spacing: 0.05rem;
 }
@@ -20,8 +19,9 @@
 }
 
 .logo {
-  margin-left: 16px;
-  float: left;
+  color: #FFC440;
+  margin-left: 5px;
+  position: relative;
 }
 
 .datasearch {
@@ -55,7 +55,7 @@
   right: 0;
   border-right: 1px solid #f0f0f0;
   overflow: scroll;
-  background-color: "#8b9dc3"
+  background-color: "#FFC440"
 }
 
 .leftSidebar > div {
